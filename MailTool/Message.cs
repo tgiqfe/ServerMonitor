@@ -1,37 +1,33 @@
 ﻿
 namespace MailTool
 {
-    public class Message
+    internal class Message
     {
-        public string Server { get; set; }
-        public int Port { get; set; }
-        public string[] To { get; set; }
-        public string From { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public string Subject { get; set; }
-        public string Body { get; set; }
-
-        public void Send()
+        public static void Send(MailSetting setting)
         {
             var msg = new MimeKit.MimeMessage();
-            msg.From.Add(new MimeKit.MailboxAddress(null, this.From));
-            this.To.ToList().ForEach(x => msg.To.Add(new MimeKit.MailboxAddress(null, x)));
-            msg.Subject = this.Subject;
+            msg.From.Add(new MimeKit.MailboxAddress(null, setting.From));
+            setting.To.ToList().ForEach(x => msg.To.Add(new MimeKit.MailboxAddress(null, x)));
+            msg.Subject = setting.Subject;
 
             var bodyText = new MimeKit.TextPart("Plain");
-            bodyText.Text = this.Body;
+            bodyText.Text = setting.Body;
             msg.Body = bodyText;
 
-            using (var client = new MailKit.Net.Smtp.SmtpClient())
+            try
             {
-                client.Connect(this.Server, this.Port, MailKit.Security.SecureSocketOptions.None);
-                if(!string.IsNullOrEmpty(this.UserName) && !string.IsNullOrEmpty(this.Password))
+                using (var client = new MailKit.Net.Smtp.SmtpClient())
                 {
-                    client.Authenticate(this.UserName, this.Password);
+                    client.Connect(setting.Server, setting.Port, MailKit.Security.SecureSocketOptions.None);
+                    if (!string.IsNullOrEmpty(setting.UserName) && !string.IsNullOrEmpty(setting.Password))
+                    {
+                        client.Authenticate(setting.UserName, setting.Password);
+                    }
+                    client.Send(msg);
                 }
-                client.Send(msg);
-                client.Disconnect(true);
+            }catch(Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
     }
