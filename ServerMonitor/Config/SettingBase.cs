@@ -11,26 +11,17 @@ namespace ServerMonitor.Config
 {
     public class SettingBase
     {
-
         protected virtual int IndentLength { get { return 0; } }
 
-
-
-
         private PropertyInfo[] _props { get; set; }
-
 
         private static readonly string[] _falseCandidate = new string[]
         {
             "", "0", "-", "false", "fals", "no", "not", "none", "non", "empty", "null", "否", "不", "無", "dis", "disable", "disabled"
         };
 
-
-
         public void Load(TextSeeker seeker)
         {
-            Console.WriteLine(this.GetType().Name);
-
             string line = "";
             while ((line = seeker.ReadLine()) != null)
             {
@@ -88,9 +79,5 @@ namespace ServerMonitor.Config
                 }
             }
         }
-
-
-
-
     }
 }

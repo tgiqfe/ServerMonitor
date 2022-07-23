@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace ServerMonitor.Config
 {
-    public class Disk : SettingBase
+    public class MemoryMonitorSetting : SettingBase
     {
+        protected override int IndentLength { get { return 2; } }
+
         public int? Threshold { get; set; }
         public int? MaxFailedCount { get; set; }
         public int? MinRestoreCount { get; set; }
-
-        protected override int IndentLength { get { return 2; } }
     }
 }

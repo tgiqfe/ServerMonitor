@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
-
+﻿
 namespace ServerMonitor
 {
     public class TextSeeker
@@ -14,7 +8,7 @@ namespace ServerMonitor
 
         public TextSeeker(string content)
         {
-            _contentLines = Regex.Split(content, @"\r?\n");
+            _contentLines = System.Text.RegularExpressions.Regex.Split(content, @"\r?\n");
         }
 
         public string ReadLine()
